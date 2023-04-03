@@ -1,0 +1,8 @@
+server:
+  port: 8093
+spring:
+  data:
+  cassandra:
+    keyspace-name: carsharing
+    port: 9042
+    local-datacenter: datacenter1
