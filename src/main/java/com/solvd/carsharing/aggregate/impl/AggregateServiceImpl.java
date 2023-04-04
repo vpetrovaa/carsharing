@@ -32,8 +32,8 @@ public class AggregateServiceImpl implements AggregateService {
     @Override
     public void when(Event event) {
         switch (event.getEventType()) {
-            case CarCreatedEvent.CAR_CREATED -> log.info("Car was created");
-            case NumberUpdatedEvent.CAR_UPDATED -> log.info("Car was updated");
+            case "CarCreated" -> log.info("Car was created");
+            case "CarUpdated" -> log.info("Car was updated");
             default -> throw new IllegalEventException("Exception in " + event.getEventType() + " type");
         }
     }
