@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event create(CreateCarCommand command) {
         Event carCreatedEvent = new CarCreatedEvent();
+        carCreatedEvent.setId(UUID.randomUUID().toString());
         carCreatedEvent.setCreatedAt(LocalDateTime.now());
         carCreatedEvent.setAggregateId(command.getAggregateId());
         carCreatedEvent.setEventType(CarCreatedEvent.CAR_CREATED);
@@ -32,6 +34,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event update(UpdateNumberCommand command) {
         Event numberUpdatedEvent = new NumberUpdatedEvent();
+        numberUpdatedEvent.setId(UUID.randomUUID().toString());
         numberUpdatedEvent.setCreatedAt(LocalDateTime.now());
         numberUpdatedEvent.setAggregateId(command.getAggregateId());
         numberUpdatedEvent.setEventType(NumberUpdatedEvent.CAR_UPDATED);
