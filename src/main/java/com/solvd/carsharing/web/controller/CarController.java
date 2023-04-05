@@ -5,7 +5,7 @@ import com.solvd.carsharing.command.CommandService;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.query.FindAllCarsQuery;
-import com.solvd.carsharing.query.FindAllEventsByAggregateIdQuery;
+import com.solvd.carsharing.query.FindAllEventsByCarNumberQuery;
 import com.solvd.carsharing.query.QueryService;
 import com.solvd.carsharing.web.dto.CarAggregateDto;
 import com.solvd.carsharing.web.dto.CarDto;
@@ -44,7 +44,7 @@ public class CarController {
 
     @GetMapping("/events/{aggregateId}")
     public Flux<EventDto> findAllEventsByAggregateId(@PathVariable String aggregateId) {
-        Flux<Event> events = queryService.handle(new FindAllEventsByAggregateIdQuery(aggregateId));
+        Flux<Event> events = queryService.handle(new FindAllEventsByCarNumberQuery(aggregateId));
         return events.map(eventMapper::toDto);
     }
 

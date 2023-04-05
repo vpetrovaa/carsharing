@@ -17,6 +17,7 @@ public class Event {
     @PrimaryKey
     private String id;
     private String aggregateId;
+    private String carNumber;
     private String eventType;
     private String data;
     private LocalDateTime createdAt;

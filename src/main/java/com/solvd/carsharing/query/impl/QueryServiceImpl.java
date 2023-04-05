@@ -3,7 +3,7 @@ package com.solvd.carsharing.query.impl;
 import com.solvd.carsharing.aggregate.CarAggregate;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.query.FindAllCarsQuery;
-import com.solvd.carsharing.query.FindAllEventsByAggregateIdQuery;
+import com.solvd.carsharing.query.FindAllEventsByCarNumberQuery;
 import com.solvd.carsharing.query.QueryService;
 import com.solvd.carsharing.repository.CarRepository;
 import com.solvd.carsharing.repository.EventRepository;
@@ -27,9 +27,9 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public Flux<Event> handle(FindAllEventsByAggregateIdQuery query) {
-        log.info("Find all events by aggregate id query was called");
-        return eventRepository.findAllByAggregateId(query.aggregateId());
+    public Flux<Event> handle(FindAllEventsByCarNumberQuery query) {
+        log.info("Find all events by car number id query was called");
+        return eventRepository.findAllByCarNumber(query.carNumber());
     }
 
 }

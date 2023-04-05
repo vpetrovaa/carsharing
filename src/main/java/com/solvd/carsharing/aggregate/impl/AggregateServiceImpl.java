@@ -4,6 +4,7 @@ import com.solvd.carsharing.aggregate.AggregateService;
 import com.solvd.carsharing.aggregate.CarAggregate;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.domain.exception.IllegalEventException;
+import com.solvd.carsharing.domain.exception.ResourceAlreadyExistsException;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,14 +44,21 @@ public class AggregateServiceImpl implements AggregateService {
 
     @Override
     public Mono<CarAggregate> create(Event event, Car car) {
-        apply(event);
-        CarAggregate aggregate = new CarAggregate();
-        aggregate.setId(event.getAggregateId());
-        aggregate.setRevision(1L);
-        aggregate.setModel(car.getModel());
-        aggregate.setStatus(car.getStatus());
-        aggregate.setNumber(car.getNumber());
-        return carRepository.save(aggregate);
+        return carRepository.existsByNumber(car.getNumber())
+                .flatMap(isExist -> {
+                    if (isExist) {
+                        return Mono.error(new ResourceAlreadyExistsException("Car with number " + car.getNumber() +
+                                " already exists"));
+                    }
+                    apply(event);
+                    CarAggregate aggregate = new CarAggregate();
+                    aggregate.setId(event.getAggregateId());
+                    aggregate.setRevision(1L);
+                    aggregate.setModel(car.getModel());
+                    aggregate.setStatus(car.getStatus());
+                    aggregate.setNumber(car.getNumber());
+                    return carRepository.save(aggregate);
+                });
     }
 
     @Override

@@ -8,6 +8,6 @@ public interface QueryService {
 
     Flux<CarAggregate> handle(FindAllCarsQuery query);
 
-    Flux<Event> handle(FindAllEventsByAggregateIdQuery query);
+    Flux<Event> handle(FindAllEventsByCarNumberQuery query);
 
 }

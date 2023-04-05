@@ -25,6 +25,7 @@ public class EventServiceImpl implements EventService {
         carCreatedEvent.setId(UUID.randomUUID().toString());
         carCreatedEvent.setCreatedAt(LocalDateTime.now());
         carCreatedEvent.setAggregateId(command.getAggregateId());
+        carCreatedEvent.setCarNumber(command.getCar().getNumber());
         carCreatedEvent.setEventType(carCreatedEvent.getName());
         carCreatedEvent.setData(command.getCar().toString());
         eventRepository.save(carCreatedEvent);
@@ -39,6 +40,7 @@ public class EventServiceImpl implements EventService {
         numberUpdatedEvent.setAggregateId(command.getAggregateId());
         numberUpdatedEvent.setEventType(numberUpdatedEvent.getName());
         numberUpdatedEvent.setData(command.getNumber());
+        numberUpdatedEvent.setCarNumber(command.getNumber());
         eventRepository.save(numberUpdatedEvent);
         return numberUpdatedEvent;
     }
