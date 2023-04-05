@@ -18,7 +18,6 @@ public class Event {
     private String id;
     private String aggregateId;
     private String eventType;
-    private long revision;
     private String data;
     private LocalDateTime createdAt;
 

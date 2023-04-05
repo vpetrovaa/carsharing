@@ -4,9 +4,7 @@ import com.solvd.carsharing.aggregate.AggregateService;
 import com.solvd.carsharing.aggregate.CarAggregate;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.domain.exception.IllegalEventException;
-import com.solvd.carsharing.event.CarCreatedEvent;
 import com.solvd.carsharing.event.Event;
-import com.solvd.carsharing.event.NumberUpdatedEvent;
 import com.solvd.carsharing.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +24,6 @@ public class AggregateServiceImpl implements AggregateService {
     public void apply(Event event) {
         validateEvent(event);
         when(event);
-        event.setRevision(event.getRevision()+1L);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class AggregateServiceImpl implements AggregateService {
         apply(event);
         CarAggregate aggregate = new CarAggregate();
         aggregate.setId(event.getAggregateId());
-        aggregate.setRevision(event.getRevision());
+        aggregate.setRevision(1L);
         aggregate.setModel(car.getModel());
         aggregate.setStatus(car.getStatus());
         aggregate.setNumber(car.getNumber());
@@ -60,9 +57,8 @@ public class AggregateServiceImpl implements AggregateService {
     public Mono<CarAggregate> update(Event event, String number) {
         return carRepository.findById(event.getAggregateId())
                 .map(aggregate -> {
-                    event.setRevision(aggregate.getRevision());
                     apply(event);
-                    aggregate.setRevision(event.getRevision());
+                    aggregate.setRevision(aggregate.getRevision() + 1L);
                     aggregate.setNumber(number);
                     return aggregate;
                 }).flatMap(carRepository::save);
