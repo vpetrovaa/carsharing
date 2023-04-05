@@ -9,6 +9,4 @@ public interface EventService {
 
     Event update(UpdateNumberCommand command);
 
-    String getName(Event event);
-
 }

@@ -25,7 +25,7 @@ public class EventServiceImpl implements EventService {
         carCreatedEvent.setId(UUID.randomUUID().toString());
         carCreatedEvent.setCreatedAt(LocalDateTime.now());
         carCreatedEvent.setAggregateId(command.getAggregateId());
-        carCreatedEvent.setEventType(getName(carCreatedEvent));
+        carCreatedEvent.setEventType(carCreatedEvent.getName());
         carCreatedEvent.setData(command.getCar().toString());
         eventRepository.save(carCreatedEvent);
         return carCreatedEvent;
@@ -37,20 +37,10 @@ public class EventServiceImpl implements EventService {
         numberUpdatedEvent.setId(UUID.randomUUID().toString());
         numberUpdatedEvent.setCreatedAt(LocalDateTime.now());
         numberUpdatedEvent.setAggregateId(command.getAggregateId());
-        numberUpdatedEvent.setEventType(getName(numberUpdatedEvent));
+        numberUpdatedEvent.setEventType(numberUpdatedEvent.getName());
         numberUpdatedEvent.setData(command.getNumber());
         eventRepository.save(numberUpdatedEvent);
         return numberUpdatedEvent;
-    }
-
-    @Override
-    public String getName(Event event) {
-        if (event.getClass().equals(CarCreatedEvent.class)) {
-            return "CarCreated";
-        } else if(event.getClass().equals(NumberUpdatedEvent.class)) {
-            return "CarUpdated";
-        }
-        return "UndefinedEvent";
     }
 
 }

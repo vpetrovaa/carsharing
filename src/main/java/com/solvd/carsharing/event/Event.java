@@ -21,4 +21,8 @@ public class Event {
     private String data;
     private LocalDateTime createdAt;
 
+    public String getName(){
+        return "Global Event";
+    }
+
 }
