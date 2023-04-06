@@ -47,8 +47,8 @@ public class AggregateServiceImpl implements AggregateService {
         return carRepository.existsByNumber(car.getNumber())
                 .flatMap(isExist -> {
                     if (isExist) {
-                        return Mono.error(new ResourceAlreadyExistsException("Car with number " + car.getNumber() +
-                                " already exists"));
+                        return Mono.error(new ResourceAlreadyExistsException("Car with number "
+                                + car.getNumber() + " already exists"));
                     }
                     apply(event);
                     CarAggregate aggregate = new CarAggregate();
