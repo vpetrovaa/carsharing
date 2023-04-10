@@ -38,14 +38,14 @@ public class CarController {
     @PostMapping
     public Mono<CarAggregateDto> create(@RequestBody @Validated CarDto carDto) {
         Car carMapped = carMapper.toEntity(carDto);
-        Mono<CarAggregate> car = commandService.handle(carMapped);
+        Mono<CarAggregate> car = commandService.handleCreateCarCommand(carMapped);
         return car.map(carMapper::toDto);
     }
 
     @PutMapping("/{aggregateId}")
     public Mono<CarAggregateDto> updateNumber(@PathVariable String aggregateId,
                                            @RequestParam String number) {
-        Mono<CarAggregate> car = commandService.handle(aggregateId, number);
+        Mono<CarAggregate> car = commandService.handleUpdateNumberCommand(aggregateId, number);
         return car.map(carMapper::toDto);
     }
 

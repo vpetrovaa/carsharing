@@ -6,3 +6,11 @@ spring:
     keyspace-name: carsharing
     port: 9042
     local-datacenter: datacenter1
+  config:
+    import: optional:file:.env[.properties]
+
+kafka:
+  port: ${KAFKA_PORT}
+  group: groupId
+  topic: carsharing
+  host: ${HOST}

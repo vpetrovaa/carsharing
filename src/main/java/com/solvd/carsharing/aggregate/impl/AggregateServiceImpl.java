@@ -32,6 +32,7 @@ public class AggregateServiceImpl implements AggregateService {
         switch (event.getEventType()) {
             case "CarCreated" -> log.info("Car was created");
             case "CarUpdated" -> log.info("Car was updated");
+            case "CarRented" -> log.info("Car was rented");
             default -> throw new IllegalEventException("Exception in " + event.getEventType() + " type");
         }
     }
@@ -68,6 +69,22 @@ public class AggregateServiceImpl implements AggregateService {
                     apply(event);
                     aggregate.setRevision(aggregate.getRevision() + 1L);
                     aggregate.setNumber(number);
+                    return aggregate;
+                }).flatMap(carRepository::save);
+    }
+
+    @Override
+    public Mono<CarAggregate> findByNumber(String number) {
+        return carRepository.findByNumber(number);
+    }
+
+    @Override
+    public Mono<CarAggregate> rent(Event event, String number) {
+        return findByNumber(number)
+                .map(aggregate -> {
+                    apply(event);
+                    aggregate.setRevision(aggregate.getRevision() + 1L);
+                    aggregate.setStatus(Car.Status.RENTED);
                     return aggregate;
                 }).flatMap(carRepository::save);
     }

@@ -16,4 +16,8 @@ public interface AggregateService {
 
     Mono<CarAggregate> update(Event event, String number);
 
+    Mono<CarAggregate> findByNumber(String number);
+
+    Mono<CarAggregate> rent(Event event, String number);
+
 }
