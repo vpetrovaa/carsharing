@@ -1,4 +1,4 @@
-package com.solvd.carsharing.command.util;
+package com.solvd.carsharing.command.rental;
 
 import com.solvd.carsharing.kafka.property.KfProperties;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class CommandUtilsImpl implements CommandUtils {
+public class RentalServiceImpl implements RentalService {
 
     private final KfProperties properties;
 

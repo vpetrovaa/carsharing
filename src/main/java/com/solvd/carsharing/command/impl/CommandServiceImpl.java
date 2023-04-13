@@ -6,7 +6,7 @@ import com.solvd.carsharing.command.CreateCarCommand;
 import com.solvd.carsharing.command.CommandService;
 import com.solvd.carsharing.command.RentCarCommand;
 import com.solvd.carsharing.command.UpdateNumberCommand;
-import com.solvd.carsharing.command.util.CommandUtils;
+import com.solvd.carsharing.command.rental.RentalService;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.event.EventService;
@@ -24,7 +24,7 @@ public class CommandServiceImpl implements CommandService {
 
     private final AggregateService aggregateService;
     private final EventService eventService;
-    private final CommandUtils commandUtils;
+    private final RentalService rentalService;
 
     @Override
     public Mono<CarAggregate> handleCreateCarCommand(Car car) {
@@ -51,14 +51,14 @@ public class CommandServiceImpl implements CommandService {
         aggregateService.findByNumber(number)
                 .map(car -> {
                     if(car.getStatus().equals(Car.Status.FREE)) {
-                        commandUtils.callConfirmOrDenyMethod(aggregateId, "confirm");
+                        rentalService.callConfirmOrDenyMethod(aggregateId, "confirm");
                         RentCarCommand command = new RentCarCommand();
                         command.setAggregateId(car.getId());
                         command.setCarNumber(number);
                         Event event = eventService.rent(command);
                         return aggregateService.rent(event, number);
                     } else {
-                        commandUtils.callConfirmOrDenyMethod(aggregateId, "deny");
+                        rentalService.callConfirmOrDenyMethod(aggregateId, "deny");
                         return aggregate;
                     }
                 });
