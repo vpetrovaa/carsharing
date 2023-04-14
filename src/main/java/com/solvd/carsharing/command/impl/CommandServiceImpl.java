@@ -4,7 +4,9 @@ import com.solvd.carsharing.aggregate.AggregateService;
 import com.solvd.carsharing.aggregate.CarAggregate;
 import com.solvd.carsharing.command.CreateCarCommand;
 import com.solvd.carsharing.command.CommandService;
+import com.solvd.carsharing.command.RentCarCommand;
 import com.solvd.carsharing.command.UpdateNumberCommand;
+import com.solvd.carsharing.command.rental.RentalService;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.event.EventService;
@@ -22,9 +24,10 @@ public class CommandServiceImpl implements CommandService {
 
     private final AggregateService aggregateService;
     private final EventService eventService;
+    private final RentalService rentalService;
 
     @Override
-    public Mono<CarAggregate> handle(Car car) {
+    public Mono<CarAggregate> handleCreateCarCommand(Car car) {
         CreateCarCommand command = new CreateCarCommand();
         command.setCar(car);
         String aggregateId = UUID.randomUUID().toString();
@@ -34,12 +37,32 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public Mono<CarAggregate> handle(String aggregateId, String number) {
+    public Mono<CarAggregate> handleUpdateNumberCommand(String aggregateId, String number) {
         UpdateNumberCommand command = new UpdateNumberCommand();
         command.setAggregateId(aggregateId);
         command.setNumber(number);
         Event event = eventService.update(command);
         return aggregateService.update(event, number);
+    }
+
+    @Override
+    public Mono<CarAggregate> handleRentCarCommand(String number, String aggregateId) {
+        Mono<CarAggregate> aggregate = Mono.empty();
+        aggregateService.findByNumber(number)
+                .map(car -> {
+                    if(car.getStatus().equals(Car.Status.FREE)) {
+                        rentalService.callConfirmOrDenyMethod(aggregateId, "confirm");
+                        RentCarCommand command = new RentCarCommand();
+                        command.setAggregateId(car.getId());
+                        command.setCarNumber(number);
+                        Event event = eventService.rent(command);
+                        return aggregateService.rent(event, number);
+                    } else {
+                        rentalService.callConfirmOrDenyMethod(aggregateId, "deny");
+                        return aggregate;
+                    }
+                });
+        return aggregate;
     }
 
 }

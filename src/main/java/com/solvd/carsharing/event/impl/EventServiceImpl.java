@@ -1,7 +1,9 @@
 package com.solvd.carsharing.event.impl;
 
 import com.solvd.carsharing.command.CreateCarCommand;
+import com.solvd.carsharing.command.RentCarCommand;
 import com.solvd.carsharing.command.UpdateNumberCommand;
+import com.solvd.carsharing.event.CarRentedEvent;
 import com.solvd.carsharing.event.CarCreatedEvent;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.event.EventService;
@@ -43,6 +45,19 @@ public class EventServiceImpl implements EventService {
         numberUpdatedEvent.setCarNumber(command.getNumber());
         eventRepository.save(numberUpdatedEvent);
         return numberUpdatedEvent;
+    }
+
+    @Override
+    public Event rent(RentCarCommand command) {
+        Event carRentedEvent = new CarRentedEvent();
+        carRentedEvent.setId(UUID.randomUUID().toString());
+        carRentedEvent.setCreatedAt(LocalDateTime.now());
+        carRentedEvent.setAggregateId(command.getAggregateId());
+        carRentedEvent.setEventType(carRentedEvent.getName());
+        carRentedEvent.setData(command.getCarNumber());
+        carRentedEvent.setCarNumber(command.getCarNumber());
+        eventRepository.save(carRentedEvent);
+        return carRentedEvent;
     }
 
 }

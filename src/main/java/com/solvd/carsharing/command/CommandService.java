@@ -6,8 +6,10 @@ import reactor.core.publisher.Mono;
 
 public interface CommandService {
 
-    Mono<CarAggregate> handle(Car car);
+    Mono<CarAggregate> handleCreateCarCommand(Car car);
 
-    Mono<CarAggregate> handle(String aggregateId, String number);
+    Mono<CarAggregate> handleUpdateNumberCommand(String aggregateId, String number);
+
+    Mono<CarAggregate> handleRentCarCommand(String number, String aggregateId);
 
 }

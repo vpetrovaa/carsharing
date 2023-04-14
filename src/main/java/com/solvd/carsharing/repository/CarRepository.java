@@ -10,4 +10,6 @@ public interface CarRepository extends ReactiveCassandraRepository<CarAggregate,
     @AllowFiltering
     Mono<Boolean> existsByNumber(String number);
 
+    Mono<CarAggregate> findByNumber(String number);
+
 }
