@@ -1,13 +1,11 @@
 package com.solvd.carsharing.repository;
 
 import com.solvd.carsharing.event.Event;
-import org.springframework.data.cassandra.repository.AllowFiltering;
-import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 
-public interface EventRepository extends ReactiveCassandraRepository<Event, String> {
+public interface EventRepository extends ReactiveMongoRepository<Event, String> {
 
-    @AllowFiltering
     Flux<Event> findAllByCarNumber(String number);
 
 }

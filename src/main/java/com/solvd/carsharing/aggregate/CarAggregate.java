@@ -4,16 +4,16 @@ import com.solvd.carsharing.domain.Car;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Table("cars")
+@Document("cars")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarAggregate{
 
-    @PrimaryKey
+    @Id
     private String id;
     private Long revision;
     private String model;

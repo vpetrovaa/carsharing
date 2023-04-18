@@ -2,6 +2,7 @@ package com.solvd.carsharing.web.controller;
 
 import com.solvd.carsharing.aggregate.CarAggregate;
 import com.solvd.carsharing.command.CommandService;
+import com.solvd.carsharing.command.rental.RentalService;
 import com.solvd.carsharing.domain.Car;
 import com.solvd.carsharing.event.Event;
 import com.solvd.carsharing.query.FindAllCarsQuery;
@@ -34,6 +35,7 @@ public class CarController {
     private final CarMapper carMapper;
     private final QueryService queryService;
     private final EventMapper eventMapper;
+    private final RentalService rentalService;
 
     @PostMapping
     public Mono<CarAggregateDto> create(@RequestBody @Validated CarDto carDto) {
@@ -59,6 +61,11 @@ public class CarController {
     public Flux<CarAggregateDto> findAllCars() {
         Flux<CarAggregate> cars = queryService.handle(new FindAllCarsQuery());
         return cars.map(carMapper::toDto);
+    }
+
+    @GetMapping("/{carNumber}")
+    public Mono<String> findCarRenter(@PathVariable String carNumber) {
+        return rentalService.getRenterName(carNumber);
     }
 
 }

@@ -3,18 +3,18 @@ package com.solvd.carsharing.event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Data
-@Table("events")
+@Document("car_events")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
 
-    @PrimaryKey
+    @Id
     private String id;
     private String aggregateId;
     private String carNumber;
