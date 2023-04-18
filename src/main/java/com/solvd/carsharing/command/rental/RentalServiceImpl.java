@@ -25,4 +25,15 @@ public class RentalServiceImpl implements RentalService {
                 .bodyToMono(String.class);
     }
 
+    @Override
+    public Mono<String> getRenterName(String carNumber) {
+        WebClient webClient = WebClient.create("http://" + properties.getHost());
+        return webClient
+                .get()
+                .uri("/api/v1/rentals/" + carNumber)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
 }
