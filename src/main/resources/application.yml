@@ -9,7 +9,7 @@ spring:
       username: ${USERNAME}
       password: ${PASSWORD}
       port: ${MONGODB_PORT}
-      host: ${MONGODB_HOST}
+      host: ${MONGODB_HOST_CARS}
   config:
     import: optional:file:.env[.properties]
 
