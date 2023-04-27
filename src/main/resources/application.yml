@@ -14,7 +14,7 @@ spring:
     import: optional:file:.env[.properties]
 
 kafka:
-  port: ${KAFKA_PORT}
+  port: ${KAFKA_HOST}:9092
   group: groupId
   topic: carsharing
   host: ${HOST}
